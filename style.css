@@ -1,0 +1,116 @@
+:root {
+    --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --color-bg: #ffffff;
+    --color-text: #000000;
+    --color-border: #e0e0e0;
+    --color-light-bg: #fafafa;
+}
+
+body {
+    margin: 0;
+    padding: 30px 40px;
+    font-family: var(--font-main);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    height: 100vh;
+    box-sizing: border-box;
+    overflow: hidden; 
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    flex-shrink: 0;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--color-text);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.header-right { display: flex; align-items: center; }
+
+h1 { font-size: 1.5rem; font-weight: 500; margin: 0; text-transform: lowercase; }
+.collection-info { font-size: 0.8rem; text-transform: uppercase; color: #666; }
+h2 { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; margin: 0 0 10px 0; border-bottom: 1px solid var(--color-border); padding-bottom: 3px; }
+
+.minimal-btn {
+    background: none;
+    border: 1px solid #000;
+    font-family: var(--font-main);
+    text-transform: lowercase;
+    padding: 5px 15px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin-right: 20px;
+}
+.minimal-btn:hover { background: #000; color: #fff; }
+
+.layout { display: flex; gap: 50px; flex-grow: 1; overflow: hidden; }
+
+/* Sidebar mit Balken */
+.sidebar {
+    width: 320px;
+    height: 100%;
+    overflow-y: scroll;
+    padding-right: 15px;
+}
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: var(--color-bg); border-left: 1px solid var(--color-border); }
+.sidebar::-webkit-scrollbar-thumb { background: var(--color-text); }
+
+.thumbnail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 30px; }
+.thumbnail { width: 100%; aspect-ratio: 1/1; object-fit: contain; border: 1px solid var(--color-border); cursor: pointer; background: var(--color-light-bg); padding: 5px; }
+
+/* Canvas */
+.canvas-container { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.outfit-slot { width: 35vh; display: flex; align-items: center; justify-content: center; position: relative; }
+
+#slot-oberteil { z-index: 3; height: 28vh; margin-bottom: -6vh; }
+#slot-tasche   { z-index: 4; height: 18vh; margin-bottom: -8vh; width: 45vh; } 
+#slot-hose     { z-index: 2; height: 32vh; margin-bottom: -4vh; }
+#slot-schuhe   { z-index: 1; height: 12vh; }
+
+.outfit-slot img { width: 100%; height: 100%; object-fit: contain; cursor: zoom-in; }
+.empty-text { color: #ccc; font-size: 0.7rem; text-transform: uppercase; }
+
+/* Webcam Overlay */
+.webcam-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(255,255,255,0.95); z-index: 3000;
+    display: none; justify-content: center; align-items: center;
+}
+.webcam-overlay.active { display: flex; }
+.webcam-container { text-align: center; }
+#webcam-video { width: 300px; height: 300px; object-fit: cover; border-radius: 50%; border: 2px solid #000; margin-bottom: 20px; }
+
+/* Character Animation */
+.character-walker {
+    position: fixed; bottom: 5vh; left: -300px; width: 200px;
+    display: none; flex-direction: column; align-items: center; z-index: 2000;
+}
+.character-walker.active { display: flex; animation: walkAcross 7s linear forwards; }
+
+.char-part { width: 100%; background-size: contain; background-repeat: no-repeat; background-position: center; animation: bobbing 0.6s infinite ease-in-out; }
+.char-part-head { width: 70px; height: 70px; border-radius: 50%; overflow: hidden; border: 1px solid #000; background: #eee; animation: bobbing 0.6s infinite ease-in-out; }
+.char-part-head img { width: 100%; height: 100%; object-fit: cover; }
+
+#char-oberteil { height: 120px; margin-top: -10px; }
+#char-hose { height: 150px; margin-top: -15px; }
+#char-schuhe { height: 50px; margin-top: -5px; }
+
+@keyframes walkAcross { 0% { left: -300px; } 100% { left: 110vw; } }
+@keyframes bobbing { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+/* Hover Detail */
+.fullscreen-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(255,255,255,0.98); z-index: 1000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+.fullscreen-overlay.active { opacity: 1; }
+.fullscreen-overlay img { max-width: 85vw; max-height: 85vh; object-fit: contain; }
+
+@media (max-width: 800px) {
+    body { overflow-y: auto; height: auto; }
+    .layout { flex-direction: column-reverse; }
+    .sidebar { width: 100%; display: flex; overflow-x: auto; gap: 20px; }
+    .thumbnail-grid { display: flex; }
+}
